@@ -1,0 +1,85 @@
+import xml.etree.ElementTree as ET
+
+TOTAL_SIZE = 70000000
+NEEDED_SIZE = 30000000
+TARGET_SIZE = 100000
+
+DIR_TAG = "directory"
+FILE_TAG = "file"
+ROOT_NAME = "/"
+
+CMD_PREFIX = "$"
+CD_CMD = "cd"
+PARENT_WILDCARD = ".."
+DIR_PREFIX = "dir"
+NAME_ATTR = "name"
+SIZE_ATTR = "size"
+
+PREFIX_INDEX = 0
+NAME_INDEX = 1
+CMD_ARG_INDEX = 2
+
+
+def find_parent(tree, child):
+    for c in tree.findall(f"./{DIR_TAG}"):
+        if c == child:
+            return tree
+
+        parent = find_parent(c, child)
+        if parent is not None:
+            return parent
+
+    return None
+
+
+fs = ET.Element("filesystem")
+root = ET.SubElement(fs, DIR_TAG, attrib={NAME_ATTR: ROOT_NAME})
+with open("7/input", "r") as f:
+    working_dir = fs
+    for line in f:
+        line = line.strip().split(" ")
+
+        if line[PREFIX_INDEX] == CMD_PREFIX:
+            if line[NAME_INDEX] == CD_CMD:
+                old_working_dir = working_dir
+                if line[CMD_ARG_INDEX] == PARENT_WILDCARD:
+                    working_dir = find_parent(root, working_dir)
+                else:
+                    findall = (working_dir.findall(
+                        f"./{DIR_TAG}[@{NAME_ATTR}='{line[CMD_ARG_INDEX]}']"))
+                    if len(findall) > 1:
+                        raise Exception(
+                            f"More than one directory with name {line[CMD_ARG_INDEX]} found. \
+                             Tree dump:\n{ET.tostring(fs).decode()}")
+                    working_dir = findall[0]
+                if working_dir is None:
+                    ET.indent(fs)
+                    raise Exception(f"Directory {line[CMD_ARG_INDEX]} not found. \
+                         Tree dump:\n{ET.tostring(fs).decode()}")
+        elif line[PREFIX_INDEX] == DIR_PREFIX:
+            ET.SubElement(working_dir, DIR_TAG, attrib={
+                          NAME_ATTR: line[NAME_INDEX]})
+        elif line[PREFIX_INDEX].isdigit():
+            ET.SubElement(working_dir, FILE_TAG,
+                          attrib={NAME_ATTR: line[NAME_INDEX], SIZE_ATTR: line[PREFIX_INDEX]})
+        else:
+            raise Exception(f"Unknown line:\n{line}")
+
+directory_sizes = dict()
+potential_deletes = dict()
+total_target_dir_size = 0
+for directory in fs.findall(f".//{DIR_TAG}"):
+    dir_name = directory.get(NAME_ATTR)
+    directory_sizes[dir_name] = 0
+    for file in directory.findall(f".//{FILE_TAG}"):
+        directory_sizes[dir_name] = (directory_sizes[dir_name] +
+                                     int(file.get(SIZE_ATTR)))
+
+    if directory_sizes[dir_name] <= TARGET_SIZE:
+        total_target_dir_size += directory_sizes[dir_name]
+
+    if directory_sizes[dir_name] >= NEEDED_SIZE - (TOTAL_SIZE - directory_sizes[ROOT_NAME]):
+        potential_deletes[dir_name] = directory_sizes[dir_name]
+
+print(total_target_dir_size)
+print(sorted(potential_deletes.items(), key=lambda item: item[1])[0][1])

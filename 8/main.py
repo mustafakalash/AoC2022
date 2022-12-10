@@ -68,7 +68,7 @@ class Tree:
 def __main__():
     visible_trees = 0
     best_scenic_score = 0
-    with open("8/input", "r") as f:
+    with open("8/input", "r", encoding = "UTF-8") as f:
         grid = list()
         for y, line in enumerate(f):
             line = line.strip()

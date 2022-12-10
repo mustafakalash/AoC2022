@@ -41,7 +41,7 @@ class Knot:
 
 
 def __main__():
-    with open("9/input", "r") as f:
+    with open("9/input", "r", encoding = "UTF-8") as f:
         MOVE_INDEX = 0
         AMOUNT_INDEX = 1
         KNOTS = 10

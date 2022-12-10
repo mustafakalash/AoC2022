@@ -1,7 +1,7 @@
 SOP_WIDTH = 4
 SOM_WIDTH = 14
 
-with open("6/input", "r") as f:
+with open("6/input", "r", encoding = "UTF-8") as f:
     stream = f.read().strip()
     sop_packet = set()
     som_packet = set()

@@ -34,7 +34,7 @@ def find_parent(tree, child):
 
 fs = ET.Element("filesystem")
 root = ET.SubElement(fs, DIR_TAG, attrib={NAME_ATTR: ROOT_NAME})
-with open("7/input", "r") as f:
+with open("7/input", "r", encoding = "UTF-8") as f:
     working_dir = fs
     for line in f:
         line = line.strip().split(" ")

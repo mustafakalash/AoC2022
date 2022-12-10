@@ -1,4 +1,4 @@
-with open("4/input", "r") as f:
+with open("4/input", "r", encoding = "UTF-8") as f:
     total_full_overlaps = 0
     total_partial_overlaps = 0
     for line in f:

@@ -44,7 +44,7 @@ OUTCOMES = {
 
 part1_score = 0
 part2_score = 0
-with open("2/input") as f:
+with open("2/input", "r", encoding = "UTF-8") as f:
     for line in f:
         line = line.strip().split(" ")
         opponent = THROWS[line[0]]

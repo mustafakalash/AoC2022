@@ -1,6 +1,6 @@
 import string
 
-with open("3/input", "r") as f:
+with open("3/input", "r", encoding = "UTF-8") as f:
     priorities = string.ascii_lowercase + string.ascii_uppercase
     total_priority = 0
     total_badge_priority = 0

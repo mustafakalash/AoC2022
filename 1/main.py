@@ -1,6 +1,6 @@
 import bisect
 
-with open("1/input", "r") as f:
+with open("1/input", "r", encoding = "UTF-8") as f:
     current_calories = 0
     calories = list()
     for line in f:

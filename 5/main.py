@@ -18,7 +18,7 @@ def display_crates(c):
                 print(" " * (SPACE_BETWEEN_CRATES - 1), end=" ")
         print()
 
-with open("5/input", "r") as f:
+with open("5/input", "r", encoding = "UTF-8") as f:
     crates = list()
     p2_crates = list()
 

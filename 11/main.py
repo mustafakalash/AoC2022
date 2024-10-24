@@ -36,7 +36,7 @@ class Monkey:
         
 
 with open("11/input", "r", encoding = "UTF-8") as f:
-    lines = list(f)
+    lines = f.readlines()
     while len(lines):
         lines.pop(0)
         items = list(map(int, lines.pop(0).split(":")[1].strip().split(",")))

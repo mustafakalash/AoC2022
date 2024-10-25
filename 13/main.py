@@ -51,7 +51,7 @@ with open("13/input", "r", encoding="UTF-8") as f:
     for packet in DIVIDER_PACKETS:
         pairs.append(packet)
     
-    pairs = sorted(pairs, key=cmp_to_key(compare))
+    pairs.sort(key=cmp_to_key(compare))
 
     key = 1
     for packet in DIVIDER_PACKETS:
